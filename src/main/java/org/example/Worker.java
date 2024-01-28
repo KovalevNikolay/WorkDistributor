@@ -1,12 +1,10 @@
 package org.example;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Worker {
     private String name;
-    private String groupName; //develop, analytics, testing
-    private double coefKnowledge;
+    private WorkCategory groupName;
+    private double coefKnowledge;  // ArrayList <Skills> ???? worker a have many skills => many coefKnowledge
     private double focusFactor;
-    private ArrayList<WorkTypeWorker> workTypeWorker;
-    // ArrayList <Skills> ???? worker a have many skills => many coefKnowledge
+    private HashMap<String, Double> workTypeWorker;
 }

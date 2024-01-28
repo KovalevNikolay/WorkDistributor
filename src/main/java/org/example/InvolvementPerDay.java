@@ -1,6 +1,8 @@
 package org.example;
 
+import java.util.Date;
+
 public class InvolvementPerDay {
-    private int date;
+    private Date date;
     private double involvement;
 }

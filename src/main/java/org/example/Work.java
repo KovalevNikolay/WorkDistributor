@@ -1,7 +1,8 @@
 package org.example;
 
 public class Work {
+    private String workName;
     private WorkType workType;
-    private String workCategory; //enum develop, analytics, testing
+    private WorkCategory workCategory;
     private int estimateTime;
 }
