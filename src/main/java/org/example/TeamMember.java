@@ -9,4 +9,11 @@ public class TeamMember {
     public Worker getWorker() {
         return worker;
     }
+
+    @Override
+    public String toString() {
+        return "TeamMember{" +
+                "worker=" + worker +
+                '}';
+    }
 }

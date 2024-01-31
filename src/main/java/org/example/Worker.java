@@ -30,4 +30,10 @@ public class Worker {
     public HashMap<String, Double> getWorkTypeWorker() {
         return workTypeWorker;
     }
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
