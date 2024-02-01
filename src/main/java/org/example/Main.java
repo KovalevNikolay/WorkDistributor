@@ -11,13 +11,10 @@ public class Main {
         conversion.put(1.4, 0.5);
         conversion.put(1.2, 0.8);
         conversion.put(1.0, 1.0);
-        conversion.put(0.9, 1.25);
+        conversion.put(0.9, 1.4);
         conversion.put(0.7, 2.0);
         conversion.put(0.5, 2.5);
         conversion.put(0.3, 3.0);
-
-
-
     }
 
     private static void workDistribution(ArrayList<WorksForTeamMember> teamMembers, ArrayList<Work> works, HashMap<Double, Double> conversion) {
@@ -47,18 +44,12 @@ public class Main {
         PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>();
         for (Work work : works) {
             for (WorksForTeamMember teamMember : teamMembersByCategory.get(work.getWorkCategory())) {
-                // return value degreeWorkType if worker can perform this type work, else return null
                 Double workTypeOfWorker = teamMember.getTeamMember().getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
                 if (workTypeOfWorker != null) {
                     work.increaseCountWorker();
                 }
             }
-            // если не найдется сотрудников, которые могут выполнить эту работу, она все равно добавится в очередь самой первой (приоритет 0)
-            // может не добавлять ее? т.к. на следующей стадиии алгоритма для каждой такой работы
-            // мы сделаем O(n) по списку сотрудников, но не назначим сотрудника на эту работу
-
-            // Solution -> if (work.getCountWorkerWhoCanDoThisWork() != 0) { priorityQueueWorks.add(work); }
-            priorityQueueWorks.add(work);
+            if (work.getCountWorkerWhoCanDoThisWork() != 0) { priorityQueueWorks.add(work); }
         }
 
         while (!priorityQueueWorks.isEmpty()) {
@@ -68,7 +59,6 @@ public class Main {
 
             for (WorksForTeamMember teamMember : teamMembersByCategory.get(priorityQueueWorks.peek().getWorkCategory())) {
                 Double degreeWorkTypeOfWorker = teamMember.getTeamMember().getWorker().getWorkTypeWorker().get(priorityQueueWorks.peek().getWorkType().getWorkTypeName());
-                // return degreeWorkType if worker can perform this type work, else return null
                 if (degreeWorkTypeOfWorker != null) {
 
                     int currentCountOfDaysToWork = 0;
@@ -77,31 +67,17 @@ public class Main {
                     double focusFactor = teamMember.getTeamMember().getWorker().getFocusFactor();
 
                     while (progressOfExecution < priorityQueueWorks.peek().getEstimateTime()) {
-
                         double currentInvolvement = 1; //не учитывается свободная вовлеченность на конкретный день
-
                         progressOfExecution += coefKnowledge * focusFactor * degreeWorkTypeOfWorker * currentInvolvement;
                         currentCountOfDaysToWork++;
 
                     }
-
-                    if (currentCountOfDaysToWork < minCountOfDaysToWork) {
-                        fastWorker = teamMember;
-                    }
+                    if (currentCountOfDaysToWork < minCountOfDaysToWork) { fastWorker = teamMember; }
                 }
 
             }
 
             fastWorker.setWork(priorityQueueWorks.poll());
         }
-
-        //если сотрудник может выполнять такой тип работы, то считаем
-        //нужно завести временную поле, которое будет хранить сотрудника, который быстрее всего выполнит задачу
-        //если назначили сотрудника на работу, то лучше его удалить из списка. чтобы в дальнейшем не выполнять на нем расчеты для других работ,
-        //т.к. его свободная вовлеченность будет явно меньше, чем у других сотрудников.
-        //upd. лучше не удалять, т.к. возможно есть работы, которые может выполнить только один сотрудник
-
-        //для лучшей оптимизации лучше сделать PriorityQueue, CompareTo -> количество сотрудников, способных выполнить эту работу
-
     }
 }
