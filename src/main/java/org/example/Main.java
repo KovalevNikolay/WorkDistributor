@@ -42,7 +42,7 @@ public class Main {
             teamMembersByCategory.put(WorkCategory.TESTING, testing);
         }
 
-        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>();
+        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>(new CountWorkerComparator());
         for (Work work : works) {
             for (WorksForTeamMember teamMember : teamMembersByCategory.get(work.getWorkCategory())) {
                 Double workTypeOfWorker = teamMember.getTeamMember().getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());

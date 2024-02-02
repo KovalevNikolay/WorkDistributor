@@ -1,6 +1,8 @@
 package org.example;
 
-public class Work implements Comparable<Work> {
+import java.util.Comparator;
+
+public class Work {
     private String workName;
     private WorkType workType;
     private WorkCategory workCategory;
@@ -55,9 +57,11 @@ public class Work implements Comparable<Work> {
                 ", involvementRequired=" + involvementRequired +
                 '}';
     }
+}
 
+class CountWorkerComparator implements Comparator<Work> {
     @Override
-    public int compareTo(Work other) {
-        return this.countWorkerWhoCanDoThisWork - other.countWorkerWhoCanDoThisWork;
+    public int compare(Work workFirst, Work workSecond) {
+        return workFirst.getCountWorkerWhoCanDoThisWork() - workSecond.getCountWorkerWhoCanDoThisWork();
     }
 }
