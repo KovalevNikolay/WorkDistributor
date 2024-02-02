@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.HashMap;
 
 public class Worker {
@@ -15,21 +16,27 @@ public class Worker {
         this.focusFactor = focusFactor;
         this.workTypeWorker = workTypeWorker;
     }
+
     public String getName() {
         return name;
     }
+
     public Group getGroup() {
         return group;
     }
+
     public double getCoefKnowledge() {
         return coefKnowledge;
     }
+
     public double getFocusFactor() {
         return focusFactor;
     }
+
     public HashMap<String, Double> getWorkTypeWorker() {
         return workTypeWorker;
     }
+
     @Override
     public String toString() {
         return "Worker{" +

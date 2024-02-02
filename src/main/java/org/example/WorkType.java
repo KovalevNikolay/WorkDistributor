@@ -6,6 +6,7 @@ public class WorkType {
     public WorkType(String workTypeName) {
         this.workTypeName = workTypeName;
     }
+
     public String getWorkTypeName() {
         return workTypeName;
     }

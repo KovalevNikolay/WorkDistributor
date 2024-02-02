@@ -18,18 +18,23 @@ public class WorksForTeamMember {
     public Work getWork() {
         return work;
     }
+
     public TeamMember getTeamMember() {
         return teamMember;
     }
+
     public double getInvolvementAverage() {
         return involvementAverage;
     }
+
     public ArrayList<InvolvementPerDay> getInvolvementPerDays() {
         return involvementPerDays;
     }
+
     public void setWork(Work work) {
         this.work = work;
     }
+
     @Override
     public String toString() {
         return "WorksForTeamMember{" +

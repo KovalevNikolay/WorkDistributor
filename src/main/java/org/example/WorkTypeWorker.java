@@ -8,12 +8,15 @@ public class WorkTypeWorker {
         this.workType = workType;
         this.degreeWorkType = degreeWorkType;
     }
+
     public WorkType getWorkType() {
         return workType;
     }
+
     public double getDegreeWorkType() {
         return degreeWorkType;
     }
+
     public void setDegreeWorkType(double degreeWorkType) {
         this.degreeWorkType = degreeWorkType;
     }

@@ -6,6 +6,7 @@ public class Group {
     public Group(WorkCategory groupName) {
         this.groupName = groupName;
     }
+
     public WorkCategory getGroupName() {
         return groupName;
     }

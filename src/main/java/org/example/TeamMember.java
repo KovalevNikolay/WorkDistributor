@@ -6,6 +6,7 @@ public class TeamMember {
     public TeamMember(Worker worker) {
         this.worker = worker;
     }
+
     public Worker getWorker() {
         return worker;
     }

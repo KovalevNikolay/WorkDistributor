@@ -15,6 +15,7 @@ public class Main {
         conversion.put(0.7, 2.0);
         conversion.put(0.5, 2.5);
         conversion.put(0.3, 3.0);
+
     }
 
     private static void workDistribution(ArrayList<WorksForTeamMember> teamMembers, ArrayList<Work> works, HashMap<Double, Double> conversion) {
@@ -49,7 +50,9 @@ public class Main {
                     work.increaseCountWorker();
                 }
             }
-            if (work.getCountWorkerWhoCanDoThisWork() != 0) { priorityQueueWorks.add(work); }
+            if (work.getCountWorkerWhoCanDoThisWork() != 0) {
+                priorityQueueWorks.add(work);
+            }
         }
 
         while (!priorityQueueWorks.isEmpty()) {
@@ -72,7 +75,9 @@ public class Main {
                         currentCountOfDaysToWork++;
 
                     }
-                    if (currentCountOfDaysToWork < minCountOfDaysToWork) { fastWorker = teamMember; }
+                    if (currentCountOfDaysToWork < minCountOfDaysToWork) {
+                        fastWorker = teamMember;
+                    }
                 }
 
             }

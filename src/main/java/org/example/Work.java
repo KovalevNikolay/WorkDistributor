@@ -1,6 +1,6 @@
 package org.example;
 
-public class Work implements Comparable{
+public class Work implements Comparable<Work> {
     private String workName;
     private WorkType workType;
     private WorkCategory workCategory;
@@ -16,21 +16,27 @@ public class Work implements Comparable{
         this.involvementRequired = involvementRequired;
         this.countWorkerWhoCanDoThisWork = 0;
     }
+
     public String getWorkName() {
         return workName;
     }
+
     public WorkType getWorkType() {
         return workType;
     }
+
     public WorkCategory getWorkCategory() {
         return workCategory;
     }
+
     public int getEstimateTime() {
         return estimateTime;
     }
+
     public double getInvolvementRequired() {
         return involvementRequired;
     }
+
     public void increaseCountWorker() {
         this.countWorkerWhoCanDoThisWork++;
     }
@@ -38,6 +44,7 @@ public class Work implements Comparable{
     public int getCountWorkerWhoCanDoThisWork() {
         return countWorkerWhoCanDoThisWork;
     }
+
     @Override
     public String toString() {
         return "Work{" +
@@ -48,9 +55,9 @@ public class Work implements Comparable{
                 ", involvementRequired=" + involvementRequired +
                 '}';
     }
+
     @Override
-    public int compareTo(Object o) {
-        Work other = (Work) o;
+    public int compareTo(Work other) {
         return this.countWorkerWhoCanDoThisWork - other.countWorkerWhoCanDoThisWork;
     }
 }
