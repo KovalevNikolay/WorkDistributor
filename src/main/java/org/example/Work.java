@@ -58,10 +58,3 @@ public class Work {
                 '}';
     }
 }
-
-class CountWorkerComparator implements Comparator<Work> {
-    @Override
-    public int compare(Work workFirst, Work workSecond) {
-        return workFirst.getCountWorkerWhoCanDoThisWork() - workSecond.getCountWorkerWhoCanDoThisWork();
-    }
-}

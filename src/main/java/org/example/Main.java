@@ -2,6 +2,7 @@ package org.example;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -42,7 +43,12 @@ public class Main {
             teamMembersByCategory.put(WorkCategory.TESTING, testing);
         }
 
-        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>(new CountWorkerComparator());
+        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>(new Comparator<Work>() {
+            @Override
+            public int compare(Work firstWork, Work secondWork) {
+                return firstWork.getCountWorkerWhoCanDoThisWork() - secondWork.getCountWorkerWhoCanDoThisWork();
+            }
+        });
         for (Work work : works) {
             for (WorksForTeamMember teamMember : teamMembersByCategory.get(work.getWorkCategory())) {
                 Double workTypeOfWorker = teamMember.getTeamMember().getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
