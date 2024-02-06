@@ -2,7 +2,6 @@ package org.example;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -43,11 +42,8 @@ public class Main {
             teamMembersByCategory.put(WorkCategory.TESTING, testing);
         }
 
-        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>(new Comparator<Work>() {
-            @Override
-            public int compare(Work firstWork, Work secondWork) {
-                return firstWork.getCountWorkerWhoCanDoThisWork() - secondWork.getCountWorkerWhoCanDoThisWork();
-            }
+        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>((Work first, Work second) -> {
+            return first.getCountWorker() - second.getCountWorker();
         });
         for (Work work : works) {
             for (WorksForTeamMember teamMember : teamMembersByCategory.get(work.getWorkCategory())) {
@@ -56,7 +52,7 @@ public class Main {
                     work.increaseCountWorker();
                 }
             }
-            if (work.getCountWorkerWhoCanDoThisWork() != 0) {
+            if (work.getCountWorker() != 0) {
                 priorityQueueWorks.add(work);
             }
         }

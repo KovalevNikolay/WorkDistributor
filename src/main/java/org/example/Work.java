@@ -1,14 +1,12 @@
 package org.example;
 
-import java.util.Comparator;
-
 public class Work {
     private String workName;
     private WorkType workType;
     private WorkCategory workCategory;
     private int estimateTime;
     private double involvementRequired;
-    private int countWorkerWhoCanDoThisWork;
+    private int countWorker;
 
     public Work(String workName, WorkType workType, WorkCategory workCategory, int estimateTime, double involvementRequired) {
         this.workName = workName;
@@ -16,7 +14,7 @@ public class Work {
         this.workCategory = workCategory;
         this.estimateTime = estimateTime;
         this.involvementRequired = involvementRequired;
-        this.countWorkerWhoCanDoThisWork = 0;
+        this.countWorker = 0;
     }
 
     public String getWorkName() {
@@ -40,11 +38,11 @@ public class Work {
     }
 
     public void increaseCountWorker() {
-        this.countWorkerWhoCanDoThisWork++;
+        this.countWorker++;
     }
 
-    public int getCountWorkerWhoCanDoThisWork() {
-        return countWorkerWhoCanDoThisWork;
+    public int getCountWorker() {
+        return countWorker;
     }
 
     @Override
