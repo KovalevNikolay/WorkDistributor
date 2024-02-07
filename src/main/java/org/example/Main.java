@@ -18,58 +18,25 @@ public class Main {
 
     }
 
-    private static void workDistribution(ArrayList<WorksForTeamMember> teamMembers, ArrayList<Work> works, HashMap<Double, Double> conversion) {
+    private static void workDistribution(ArrayList<TeamMember> teamMembers, ArrayList<Work> works, HashMap<Double, Double> conversion) {
 
-        ArrayList<WorksForTeamMember> analytics = new ArrayList<>();
-        ArrayList<WorksForTeamMember> develop = new ArrayList<>();
-        ArrayList<WorksForTeamMember> testing = new ArrayList<>();
-        HashMap<WorkCategory, ArrayList<WorksForTeamMember>> teamMembersByCategory = new HashMap<>();
+        HashMap<WorkCategory, ArrayList<TeamMember>> teamMembersByCategory = divideWorkersIntoCategories(teamMembers);
 
-        for (WorksForTeamMember teamMember : teamMembers) {
-            switch (teamMember.getTeamMember().getWorker().getGroup().getGroupName()) {
-                case ANALYTICS:
-                    analytics.add(teamMember);
-                    break;
-                case DEVELOP:
-                    develop.add(teamMember);
-                    break;
-                case TESTING:
-                    testing.add(teamMember);
-                    break;
-            }
-            teamMembersByCategory.put(WorkCategory.ANALYTICS, analytics);
-            teamMembersByCategory.put(WorkCategory.DEVELOP, develop);
-            teamMembersByCategory.put(WorkCategory.TESTING, testing);
-        }
-
-        PriorityQueue<Work> priorityQueueWorks = new PriorityQueue<>((Work first, Work second) -> {
-            return first.getCountWorker() - second.getCountWorker();
-        });
-        for (Work work : works) {
-            for (WorksForTeamMember teamMember : teamMembersByCategory.get(work.getWorkCategory())) {
-                Double workTypeOfWorker = teamMember.getTeamMember().getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
-                if (workTypeOfWorker != null) {
-                    work.increaseCountWorker();
-                }
-            }
-            if (work.getCountWorker() != 0) {
-                priorityQueueWorks.add(work);
-            }
-        }
+        PriorityQueue<Work> priorityQueueWorks = createQueueOfWorks(works, teamMembersByCategory);
 
         while (!priorityQueueWorks.isEmpty()) {
 
-            WorksForTeamMember fastWorker = null;
+            TeamMember fastWorker = null;
             int minCountOfDaysToWork = Integer.MAX_VALUE;
 
-            for (WorksForTeamMember teamMember : teamMembersByCategory.get(priorityQueueWorks.peek().getWorkCategory())) {
-                Double degreeWorkTypeOfWorker = teamMember.getTeamMember().getWorker().getWorkTypeWorker().get(priorityQueueWorks.peek().getWorkType().getWorkTypeName());
+            for (TeamMember teamMember : teamMembersByCategory.get(priorityQueueWorks.peek().getWorkCategory())) {
+                Double degreeWorkTypeOfWorker = teamMember.getWorker().getWorkTypeWorker().get(priorityQueueWorks.peek().getWorkType().getWorkTypeName());
                 if (degreeWorkTypeOfWorker != null) {
 
                     int currentCountOfDaysToWork = 0;
                     double progressOfExecution = 0;
-                    double coefKnowledge = conversion.get(teamMember.getTeamMember().getWorker().getCoefKnowledge());
-                    double focusFactor = teamMember.getTeamMember().getWorker().getFocusFactor();
+                    double coefKnowledge = conversion.get(teamMember.getWorker().getCoefKnowledge());
+                    double focusFactor = teamMember.getWorker().getFocusFactor();
 
                     while (progressOfExecution < priorityQueueWorks.peek().getEstimateTime()) {
                         double currentInvolvement = 1; //не учитывается свободная вовлеченность на конкретный день
@@ -84,7 +51,39 @@ public class Main {
 
             }
 
-            fastWorker.setWork(priorityQueueWorks.poll());
+//            fastWorker.setWork(priorityQueueWorks.poll()); TODO create new Object WorksForTeamMember(fastWorker, Work)
         }
+    }
+
+    private static HashMap<WorkCategory, ArrayList<TeamMember>> divideWorkersIntoCategories(ArrayList<TeamMember> teamMembers) {
+        HashMap<WorkCategory, ArrayList<TeamMember>> teamMembersByCategory = new HashMap<>();
+
+        teamMembersByCategory.put(WorkCategory.ANALYTICS, new ArrayList<>());
+        teamMembersByCategory.put(WorkCategory.DEVELOP, new ArrayList<>());
+        teamMembersByCategory.put(WorkCategory.TESTING, new ArrayList<>());
+
+        for (TeamMember teamMember : teamMembers) {
+            teamMembersByCategory.get(teamMember.getWorker().getGroup().groupName).add(teamMember);
+        }
+
+        return teamMembersByCategory;
+    }
+
+    private static PriorityQueue<Work> createQueueOfWorks(ArrayList<Work> works, HashMap<WorkCategory, ArrayList<TeamMember>> teamMembers) {
+        PriorityQueue<Work> worksQueue = new PriorityQueue<>((first, second) -> first.getCountWorker() - second.getCountWorker());
+
+        for (Work work : works) {
+            for (TeamMember teamMember : teamMembers.get(work.getWorkCategory())) {
+                Double workTypeOfWorker = teamMember.getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
+                if (workTypeOfWorker != null) {
+                    work.increaseCountWorker();
+                }
+            }
+            if (work.getCountWorker() != 0) {
+                worksQueue.add(work);
+            }
+        }
+
+        return worksQueue;
     }
 }
