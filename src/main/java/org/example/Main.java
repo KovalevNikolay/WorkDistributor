@@ -1,9 +1,8 @@
 package org.example;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,10 +16,9 @@ public class Main {
         conversion.put(0.3, 3.0);
 
     }
-
     private static void workDistribution(ArrayList<TeamMember> teamMembers, ArrayList<Work> works, HashMap<Double, Double> conversion) {
 
-        HashMap<WorkCategory, ArrayList<TeamMember>> teamMembersByCategory = divideWorkersIntoCategories(teamMembers);
+        Map<WorkCategory, List<TeamMember>> teamMembersByCategory = divideWorkersIntoCategories(teamMembers);
 
         PriorityQueue<Work> priorityQueueWorks = createQueueOfWorks(works, teamMembersByCategory);
 
@@ -55,21 +53,11 @@ public class Main {
         }
     }
 
-    private static HashMap<WorkCategory, ArrayList<TeamMember>> divideWorkersIntoCategories(ArrayList<TeamMember> teamMembers) {
-        HashMap<WorkCategory, ArrayList<TeamMember>> teamMembersByCategory = new HashMap<>();
-
-        teamMembersByCategory.put(WorkCategory.ANALYTICS, new ArrayList<>());
-        teamMembersByCategory.put(WorkCategory.DEVELOP, new ArrayList<>());
-        teamMembersByCategory.put(WorkCategory.TESTING, new ArrayList<>());
-
-        for (TeamMember teamMember : teamMembers) {
-            teamMembersByCategory.get(teamMember.getWorker().getGroup().groupName).add(teamMember);
-        }
-
-        return teamMembersByCategory;
+    private static Map<WorkCategory, List<TeamMember>> divideWorkersIntoCategories(ArrayList<TeamMember> teamMembers) {
+        return teamMembers.stream().collect(Collectors.groupingBy(tm -> tm.getWorker().getGroup().groupName));
     }
 
-    private static PriorityQueue<Work> createQueueOfWorks(ArrayList<Work> works, HashMap<WorkCategory, ArrayList<TeamMember>> teamMembers) {
+    private static PriorityQueue<Work> createQueueOfWorks(ArrayList<Work> works, Map<WorkCategory, List<TeamMember>> teamMembers) {
         PriorityQueue<Work> worksQueue = new PriorityQueue<>((first, second) -> first.getCountWorker() - second.getCountWorker());
 
         for (Work work : works) {
@@ -77,6 +65,7 @@ public class Main {
                 Double workTypeOfWorker = teamMember.getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
                 if (workTypeOfWorker != null) {
                     work.increaseCountWorker();
+                    //TODO worksForTeamMember.getList().add(worker - потенциальные исполнители)
                 }
             }
             if (work.getCountWorker() != 0) {
