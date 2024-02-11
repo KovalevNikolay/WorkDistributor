@@ -16,7 +16,7 @@ public class Worker {
         this.group = group;
         this.coefKnowledge = coefKnowledge;
         this.focusFactor = focusFactor;
-        this.workTypeWorker = new HashMap<>();
+        this.worksTypeWorker = new HashMap<>();
     }
 
     public int getId() {
