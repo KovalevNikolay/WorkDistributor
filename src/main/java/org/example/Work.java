@@ -1,12 +1,14 @@
 package org.example;
 
+import java.util.ArrayList;
+
 public class Work {
     private String workName;
     private WorkType workType;
     private WorkCategory workCategory;
     private int estimateTime;
     private double involvementRequired;
-    private int countWorker;
+    private ArrayList<TeamMember> potentialPerformers;
 
     public Work(String workName, WorkType workType, WorkCategory workCategory, int estimateTime, double involvementRequired) {
         this.workName = workName;
@@ -14,7 +16,7 @@ public class Work {
         this.workCategory = workCategory;
         this.estimateTime = estimateTime;
         this.involvementRequired = involvementRequired;
-        this.countWorker = 0;
+        this.potentialPerformers = new ArrayList<>();
     }
 
     public String getWorkName() {
@@ -37,12 +39,12 @@ public class Work {
         return involvementRequired;
     }
 
-    public void increaseCountWorker() {
-        this.countWorker++;
+    public ArrayList<TeamMember> getPotentialPerformers() {
+        return potentialPerformers;
     }
 
-    public int getCountWorker() {
-        return countWorker;
+    public void addPotentialPerformers(TeamMember t) {
+        this.potentialPerformers.add(t);
     }
 
     @Override

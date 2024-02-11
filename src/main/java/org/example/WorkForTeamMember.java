@@ -2,13 +2,13 @@ package org.example;
 
 import java.util.ArrayList;
 
-public class WorksForTeamMember {
+public class WorkForTeamMember {
     private Work work;
     private TeamMember teamMember;
     private double involvementAverage;
     private ArrayList<InvolvementPerDay> involvementPerDays;
 
-    public WorksForTeamMember(TeamMember teamMember, ArrayList<InvolvementPerDay> involvementPerDays) {
+    public WorkForTeamMember(TeamMember teamMember, ArrayList<InvolvementPerDay> involvementPerDays) {
         this.work = null;
         this.teamMember = teamMember;
         this.involvementAverage = 0;
