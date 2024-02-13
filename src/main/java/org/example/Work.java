@@ -1,6 +1,9 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Work {
     private String workName;
@@ -8,7 +11,7 @@ public class Work {
     private WorkCategory workCategory;
     private int estimateTime;
     private double involvementRequired;
-    private ArrayList<TeamMember> potentialPerformers;
+    private Map<TeamMember, Integer> potentialPerformers;
 
     public Work(String workName, WorkType workType, WorkCategory workCategory, int estimateTime, double involvementRequired) {
         this.workName = workName;
@@ -16,7 +19,20 @@ public class Work {
         this.workCategory = workCategory;
         this.estimateTime = estimateTime;
         this.involvementRequired = involvementRequired;
-        this.potentialPerformers = new ArrayList<>();
+        this.potentialPerformers = new TreeMap<>((t1, t2) -> {
+            Worker w1 = t1.getWorker();
+            Worker w2 = t2.getWorker();
+            Double coefKnowledgeOfW1 = w1.getCoefKnowledge();
+            Double coefKnowledgeOfW2 = w2.getCoefKnowledge();
+            Double focusFactorOfW1 = w1.getCoefKnowledge();
+            Double focusFactorOfW2 = w2.getCoefKnowledge();
+            Double degreeOfW1 = w1.getWorkTypeWorker().get(this.getWorkType().getWorkTypeName());
+            Double degreeOfW2 = w2.getWorkTypeWorker().get(this.getWorkType().getWorkTypeName());
+
+            Double result = coefKnowledgeOfW2 * focusFactorOfW2 * degreeOfW2 - coefKnowledgeOfW1 * focusFactorOfW1 * degreeOfW1;
+
+            return result.intValue();
+        });
     }
 
     public String getWorkName() {
@@ -39,12 +55,12 @@ public class Work {
         return involvementRequired;
     }
 
-    public ArrayList<TeamMember> getPotentialPerformers() {
+    public Map<TeamMember, Integer> getPotentialPerformers() {
         return potentialPerformers;
     }
 
-    public void addPotentialPerformers(TeamMember t) {
-        this.potentialPerformers.add(t);
+    public void addPotentialPerformer(TeamMember t) {
+        this.potentialPerformers.putIfAbsent(t, Integer.MAX_VALUE);
     }
 
     @Override

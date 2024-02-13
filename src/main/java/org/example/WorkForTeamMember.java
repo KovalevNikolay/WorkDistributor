@@ -1,18 +1,21 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WorkForTeamMember {
     private Work work;
     private TeamMember teamMember;
     private double involvementAverage;
-    private ArrayList<InvolvementPerDay> involvementPerDays;
+    private List<InvolvementPerDay> involvementPerDays;
+    private int executionTime;
 
-    public WorkForTeamMember(TeamMember teamMember, ArrayList<InvolvementPerDay> involvementPerDays) {
-        this.work = null;
+    public WorkForTeamMember(Work work, TeamMember teamMember, int executionTime) {
+        this.work = work;
         this.teamMember = teamMember;
-        this.involvementAverage = 0;
-        this.involvementPerDays = involvementPerDays;
+        this.executionTime = executionTime;
+        this.involvementAverage = 0.0;
+        this.involvementPerDays = new ArrayList<>();
     }
 
     public Work getWork() {
@@ -27,12 +30,8 @@ public class WorkForTeamMember {
         return involvementAverage;
     }
 
-    public ArrayList<InvolvementPerDay> getInvolvementPerDays() {
+    public List<InvolvementPerDay> getInvolvementPerDays() {
         return involvementPerDays;
-    }
-
-    public void setWork(Work work) {
-        this.work = work;
     }
 
     @Override

@@ -5,6 +5,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
+
+    class Asd {
+        TeamMember w;
+        int count;
+    }
     public static void main(String[] args) {
         HashMap<Double, Double> conversion = new HashMap<>();
         conversion.put(1.0, 1.0);
@@ -81,65 +86,46 @@ public class Main {
         works.add(work7);
 
 
-        workDistribution(projectTeam, works, conversion);
+        getPlanningOptions(projectTeam, works, conversion);
     }
 
-    private static void workDistribution(ArrayList<TeamMember> projectTeam, ArrayList<Work> works, HashMap<Double, Double> conversion) {
-
+    private static Map<Integer, List<WorkForTeamMember>> getPlanningOptions(ArrayList<TeamMember> projectTeam, ArrayList<Work> worksList, HashMap<Double, Double> conversion) {
         Map<WorkCategory, List<TeamMember>> teamMembersByCategory = groupingWorkersIntoCategories(projectTeam);
 
-        PriorityQueue<Work> priorityQueueWorks = createQueueOfWorks(works, teamMembersByCategory);
+        List<Work> works = assignmentOfWorksToWorkers(worksList, teamMembersByCategory);
 
-        while (!priorityQueueWorks.isEmpty()) {
+        Map<Integer, List<WorkForTeamMember>> planningOptions = new HashMap<>();
 
-            TeamMember fastWorker = null;
-            int minCountOfDaysToWork = Integer.MAX_VALUE;
-
-            for (TeamMember teamMember : teamMembersByCategory.get(priorityQueueWorks.peek().getWorkCategory())) {
-                Double degreeWorkTypeOfWorker = teamMember.getWorker().getWorkTypeWorker().get(priorityQueueWorks.peek().getWorkType().getWorkTypeName());
-                if (degreeWorkTypeOfWorker != null) {
-
-                    int currentCountOfDaysToWork = 0;
-                    double progressOfExecution = 0;
-                    double coefKnowledge = conversion.get(teamMember.getWorker().getCoefKnowledge());
-                    double focusFactor = teamMember.getWorker().getFocusFactor();
-
-                    while (progressOfExecution < priorityQueueWorks.peek().getEstimateTime()) {
-                        double currentInvolvement = 1; //не учитывается свободная вовлеченность на конкретный день
-                        progressOfExecution += coefKnowledge * focusFactor * degreeWorkTypeOfWorker * currentInvolvement;
-                        currentCountOfDaysToWork++;
-
-                    }
-                    if (currentCountOfDaysToWork < minCountOfDaysToWork) {
-                        fastWorker = teamMember;
-                    }
-                }
+        for (var work : works) {
+            for (var teamMember : work.getPotentialPerformers().entrySet()) {
 
             }
-
-//            fastWorker.setWork(priorityQueueWorks.poll()); TODO create new object WorksForTeamMember(fastWorker, Work)
         }
+
+        return planningOptions;
     }
 
     private static Map<WorkCategory, List<TeamMember>> groupingWorkersIntoCategories(ArrayList<TeamMember> teamMembers) {
         return teamMembers.stream().collect(Collectors.groupingBy(tm -> tm.getWorker().getGroup().groupName));
     }
 
-    private static PriorityQueue<Work> createQueueOfWorks(ArrayList<Work> works, Map<WorkCategory, List<TeamMember>> teamMembers) {
-        PriorityQueue<Work> worksQueue = new PriorityQueue<>((first, second) -> first.getPotentialPerformers().size() - second.getPotentialPerformers().size());
+    private static List<Work> assignmentOfWorksToWorkers(ArrayList<Work> works, Map<WorkCategory, List<TeamMember>> teamMembers) {
+        List<Work> worksSort = new ArrayList<>();
 
-        for (Work work : works) {
-            for (TeamMember teamMember : teamMembers.get(work.getWorkCategory())) {
+        for (var work : works) {
+            for (var teamMember : teamMembers.get(work.getWorkCategory())) {
                 Double workTypeOfWorker = teamMember.getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
                 if (workTypeOfWorker != null) {
-                    work.addPotentialPerformers(teamMember);
+                    work.addPotentialPerformer(teamMember);
                 }
             }
             if (work.getPotentialPerformers().size() != 0) {
-                worksQueue.add(work);
+                worksSort.add(work);
             }
         }
 
-        return worksQueue;
+        Collections.sort(worksSort, (first, second) -> first.getPotentialPerformers().size() - second.getPotentialPerformers().size());
+
+        return worksSort;
     }
 }

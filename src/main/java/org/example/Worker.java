@@ -6,7 +6,7 @@ public class Worker {
     private int id;
     private String name;
     private Group group;
-    private double coefKnowledge;  // ArrayList <Skills> ???? worker a have many skills => many coefKnowledge
+    private double coefKnowledge;
     private double focusFactor;
     private HashMap<String, Double> worksTypeWorker;
 
