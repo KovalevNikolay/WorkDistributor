@@ -6,10 +6,6 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    class Asd {
-        TeamMember w;
-        int count;
-    }
     public static void main(String[] args) {
         HashMap<Double, Double> conversion = new HashMap<>();
         conversion.put(1.0, 1.0);
@@ -85,21 +81,48 @@ public class Main {
         works.add(work6);
         works.add(work7);
 
-
-        getPlanningOptions(projectTeam, works, conversion);
+        Map<Integer, List<WorkForTeamMember>> result = getPlanningOptions(projectTeam, works, conversion);
+        System.out.println(result);
     }
 
     private static Map<Integer, List<WorkForTeamMember>> getPlanningOptions(ArrayList<TeamMember> projectTeam, ArrayList<Work> worksList, HashMap<Double, Double> conversion) {
-        Map<WorkCategory, List<TeamMember>> teamMembersByCategory = groupingWorkersIntoCategories(projectTeam);
 
+        Map<WorkCategory, List<TeamMember>> teamMembersByCategory = groupingWorkersIntoCategories(projectTeam);
         List<Work> works = assignmentOfWorksToWorkers(worksList, teamMembersByCategory);
 
         Map<Integer, List<WorkForTeamMember>> planningOptions = new HashMap<>();
 
-        for (var work : works) {
-            for (var teamMember : work.getPotentialPerformers().entrySet()) {
+        planningOptions.put(0, new ArrayList<>());
+        planningOptions.put(1, new ArrayList<>());
+        planningOptions.put(2, new ArrayList<>());
+        planningOptions.put(3, new ArrayList<>());
+        planningOptions.put(4, new ArrayList<>());
 
+
+        WorkForTeamMember workForTeamMember;
+        List<WorkForTeamMember> worksForTeamMemberList = new ArrayList<>();
+
+        for (Work work : works) {
+
+            for (TeamMember tm : work.getPotentialPerformers()) {
+                workForTeamMember = new WorkForTeamMember(work, tm);
+                worksForTeamMemberList.add(workForTeamMember);
             }
+
+            Collections.sort(worksForTeamMemberList, (wt1, wt2) -> wt1.getExecutionTime() - wt2.getExecutionTime());
+
+            int countOptions = 0;
+            Iterator<WorkForTeamMember> iterator = worksForTeamMemberList.iterator();
+            while (countOptions < planningOptions.size()) {
+                WorkForTeamMember current = null;
+                if (iterator.hasNext()) {
+                    current = iterator.next();
+                }
+                planningOptions.get(countOptions).add(current);
+                countOptions++;
+            }
+
+            worksForTeamMemberList.clear();
         }
 
         return planningOptions;

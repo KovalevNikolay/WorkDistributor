@@ -10,12 +10,29 @@ public class WorkForTeamMember {
     private List<InvolvementPerDay> involvementPerDays;
     private int executionTime;
 
-    public WorkForTeamMember(Work work, TeamMember teamMember, int executionTime) {
+    public WorkForTeamMember(Work work, TeamMember teamMember) {
         this.work = work;
         this.teamMember = teamMember;
-        this.executionTime = executionTime;
+        this.executionTime = et(work, teamMember);
         this.involvementAverage = 0.0;
         this.involvementPerDays = new ArrayList<>();
+    }
+
+    public int getExecutionTime() {
+        return executionTime;
+    }
+
+    private int et(Work work, TeamMember teamMember) {
+        double result = 0;
+        int countDays = 0;
+        if (teamMember.getWorksForTeamMember().size() == 0) {
+            while (result <= work.getEstimateTime()) {
+                countDays++;
+                result += teamMember.getWorker().getCoefKnowledge() * teamMember.getWorker().getFocusFactor() *
+                        teamMember.getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName()) * 1;
+            }
+        }
+        return countDays;
     }
 
     public Work getWork() {

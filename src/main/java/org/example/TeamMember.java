@@ -11,6 +11,10 @@ public class TeamMember {
         this.worksForTeamMember = new ArrayList<>();
     }
 
+    public ArrayList<WorkForTeamMember> getWorksForTeamMember() {
+        return worksForTeamMember;
+    }
+
     public Worker getWorker() {
         return worker;
     }
