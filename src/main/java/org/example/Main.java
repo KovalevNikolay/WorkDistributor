@@ -82,7 +82,9 @@ public class Main {
         works.add(work7);
 
         Map<Integer, List<WorkForTeamMember>> result = getPlanningOptions(projectTeam, works, conversion);
-        System.out.println(result);
+        for (var option : result.entrySet()) {
+            System.out.println(option.getValue());
+        }
     }
 
     private static Map<Integer, List<WorkForTeamMember>> getPlanningOptions(ArrayList<TeamMember> projectTeam, ArrayList<Work> worksList, HashMap<Double, Double> conversion) {
@@ -142,7 +144,7 @@ public class Main {
                     work.addPotentialPerformer(teamMember);
                 }
             }
-            if (work.getPotentialPerformers().size() != 0) {
+            if (!work.getPotentialPerformers().isEmpty()) {
                 worksSort.add(work);
             }
         }
