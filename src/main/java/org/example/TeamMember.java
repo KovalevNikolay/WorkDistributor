@@ -21,8 +21,6 @@ public class TeamMember {
 
     @Override
     public String toString() {
-        return "TeamMember{" +
-                "worker=" + worker +
-                '}';
+        return "TeamMember {" + worker + '}';
     }
 }

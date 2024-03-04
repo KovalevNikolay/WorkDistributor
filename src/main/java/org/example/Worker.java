@@ -48,12 +48,8 @@ public class Worker {
     }
     @Override
     public String toString() {
-        return "Worker{" +
+        return "Worker {" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", group=" + group +
-                ", coefKnowledge=" + coefKnowledge +
-                ", focusFactor=" + focusFactor +
-                '}';
+                ", name='" + name;
     }
 }

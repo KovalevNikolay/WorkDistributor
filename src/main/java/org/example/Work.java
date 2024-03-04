@@ -8,7 +8,6 @@ public class Work {
     private WorkCategory workCategory;
     private int estimateTime;
     private double involvementRequired;
-    private List<TeamMember> potentialPerformers;
 
     public Work(String workName, WorkType workType, WorkCategory workCategory, int estimateTime, double involvementRequired) {
         this.workName = workName;
@@ -16,7 +15,6 @@ public class Work {
         this.workCategory = workCategory;
         this.estimateTime = estimateTime;
         this.involvementRequired = involvementRequired;
-        this.potentialPerformers = new ArrayList<>();
     }
 
     public String getWorkName() {
@@ -39,21 +37,10 @@ public class Work {
         return involvementRequired;
     }
 
-    public List<TeamMember> getPotentialPerformers() {
-        return potentialPerformers;
-    }
-
-    public void addPotentialPerformer(TeamMember t) {
-        this.potentialPerformers.add(t);
-    }
-
     @Override
     public String toString() {
         return "Work{" +
                 "workName='" + workName + '\'' +
-                ", workType=" + workType +
-                ", workCategory=" + workCategory +
-                ", estimateTime=" + estimateTime +
                 ", involvementRequired=" + involvementRequired +
                 '}';
     }

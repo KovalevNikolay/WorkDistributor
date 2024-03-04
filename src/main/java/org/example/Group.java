@@ -10,4 +10,9 @@ public class Group {
     public WorkCategory getGroupName() {
         return groupName;
     }
+
+    @Override
+    public String toString() {
+        return "groupName=" + groupName;
+    }
 }

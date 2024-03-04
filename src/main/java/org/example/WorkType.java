@@ -10,4 +10,9 @@ public class WorkType {
     public String getWorkTypeName() {
         return workTypeName;
     }
+
+    @Override
+    public String toString() {
+        return workTypeName;
+    }
 }

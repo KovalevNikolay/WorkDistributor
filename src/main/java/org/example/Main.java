@@ -90,67 +90,56 @@ public class Main {
     private static Map<Integer, List<WorkForTeamMember>> getPlanningOptions(ArrayList<TeamMember> projectTeam, ArrayList<Work> worksList, HashMap<Double, Double> conversion) {
 
         Map<WorkCategory, List<TeamMember>> teamMembersByCategory = groupingWorkersIntoCategories(projectTeam);
-        List<Work> works = assignmentOfWorksToWorkers(worksList, teamMembersByCategory);
-
-        Map<Integer, List<WorkForTeamMember>> planningOptions = new HashMap<>();
-
-        planningOptions.put(0, new ArrayList<>());
-        planningOptions.put(1, new ArrayList<>());
-        planningOptions.put(2, new ArrayList<>());
-        planningOptions.put(3, new ArrayList<>());
-        planningOptions.put(4, new ArrayList<>());
-
+        Map<Work, List<TeamMember>> performers = assignmentOfWorksToWorkers(worksList, teamMembersByCategory);
+        Map<Integer, List<WorkForTeamMember>> options = new HashMap<>();
+        options.put(0, new ArrayList<>());
+        options.put(1, new ArrayList<>());
+        options.put(2, new ArrayList<>());
+        options.put(3, new ArrayList<>());
+        options.put(4, new ArrayList<>());
 
         WorkForTeamMember workForTeamMember;
-        List<WorkForTeamMember> worksForTeamMemberList = new ArrayList<>();
 
-        for (Work work : works) {
-
-            for (TeamMember tm : work.getPotentialPerformers()) {
-                workForTeamMember = new WorkForTeamMember(work, tm);
-                worksForTeamMemberList.add(workForTeamMember);
+        for (Map.Entry<Work, List<TeamMember>> work : performers.entrySet()) {
+            List<WorkForTeamMember> workForTeamMemberList = new ArrayList<>();
+            for (TeamMember tm : work.getValue()) {
+                workForTeamMember = new WorkForTeamMember(work.getKey(), tm);
+                workForTeamMemberList.add(workForTeamMember);
             }
 
-            Collections.sort(worksForTeamMemberList, (wt1, wt2) -> wt1.getExecutionTime() - wt2.getExecutionTime());
+            Collections.sort(workForTeamMemberList, (w1, w2) -> w1.getExecutionTime() - w2.getExecutionTime());
 
-            int countOptions = 0;
-            Iterator<WorkForTeamMember> iterator = worksForTeamMemberList.iterator();
-            while (countOptions < planningOptions.size()) {
-                WorkForTeamMember current = null;
-                if (iterator.hasNext()) {
-                    current = iterator.next();
+            int currentIndex = 0;
+            for (int i = 0; i < options.size(); i++) {
+                if (currentIndex == workForTeamMemberList.size()) {
+                    currentIndex = 0;
                 }
-                planningOptions.get(countOptions).add(current);
-                countOptions++;
+                options.get(i).add(workForTeamMemberList.get(currentIndex));
+                currentIndex++;
             }
 
-            worksForTeamMemberList.clear();
-        }
+            workForTeamMemberList.clear();
 
-        return planningOptions;
+        }
+        return options;
     }
 
     private static Map<WorkCategory, List<TeamMember>> groupingWorkersIntoCategories(ArrayList<TeamMember> teamMembers) {
         return teamMembers.stream().collect(Collectors.groupingBy(tm -> tm.getWorker().getGroup().groupName));
     }
 
-    private static List<Work> assignmentOfWorksToWorkers(ArrayList<Work> works, Map<WorkCategory, List<TeamMember>> teamMembers) {
-        List<Work> worksSort = new ArrayList<>();
-
-        for (var work : works) {
-            for (var teamMember : teamMembers.get(work.getWorkCategory())) {
+    private static Map<Work, List<TeamMember>> assignmentOfWorksToWorkers(ArrayList<Work> works, Map<WorkCategory, List<TeamMember>> teamMembers) {
+        Map<Work, List<TeamMember>> performersOfWork = new HashMap<>();
+        for (Work work : works) {
+            performersOfWork.putIfAbsent(work, new ArrayList<>());
+            for (TeamMember teamMember : teamMembers.get(work.getWorkCategory())) {
                 Double workTypeOfWorker = teamMember.getWorker().getWorkTypeWorker().get(work.getWorkType().getWorkTypeName());
                 if (workTypeOfWorker != null) {
-                    work.addPotentialPerformer(teamMember);
+                    performersOfWork.get(work).add(teamMember);
                 }
-            }
-            if (!work.getPotentialPerformers().isEmpty()) {
-                worksSort.add(work);
             }
         }
 
-        Collections.sort(worksSort, (first, second) -> first.getPotentialPerformers().size() - second.getPotentialPerformers().size());
-
-        return worksSort;
+        return performersOfWork;
     }
 }

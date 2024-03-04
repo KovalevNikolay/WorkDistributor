@@ -53,11 +53,6 @@ public class WorkForTeamMember {
 
     @Override
     public String toString() {
-        return "WorksForTeamMember{" +
-                "work=" + work +
-                ", teamMember=" + teamMember +
-                ", involvementAverage=" + involvementAverage +
-                ", involvementPerDays=" + involvementPerDays +
-                '}';
+        return work + ", " + teamMember;
     }
 }
