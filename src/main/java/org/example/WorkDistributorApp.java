@@ -9,6 +9,7 @@ public class WorkDistributorApp {
         Map<WorkCategory, List<TeamMember>> teamMembersByCategory = groupingWorkersIntoCategories(projectTeam);
         Map<Work, List<TeamMember>> performers = assignmentOfWorksToWorkers(worksList, teamMembersByCategory);
         Map<Integer, List<WorkForTeamMember>> options = new HashMap<>();
+
         options.put(0, new ArrayList<>());
         options.put(1, new ArrayList<>());
         options.put(2, new ArrayList<>());
