@@ -42,7 +42,7 @@ public class WorkDistributorApp {
         return options;
     }
 
-    private Map<WorkCategory, List<TeamMember>> groupingWorkersIntoCategories(ArrayList<TeamMember> teamMembers) {
+    public Map<WorkCategory, List<TeamMember>> groupingWorkersIntoCategories(List<TeamMember> teamMembers) {
         return teamMembers.stream().collect(Collectors.groupingBy(tm -> tm.getWorker().getGroup().groupName));
     }
 
