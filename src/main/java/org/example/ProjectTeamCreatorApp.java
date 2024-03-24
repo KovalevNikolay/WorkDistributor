@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ProjectTeamCreatorApp {
     public List<TeamMember> createProjectTeam(List<TeamMember> teamMembers, Map<WorkCategory, Integer> countPeople, Selection t) {
-        List<TeamMember> projectTeam = new ArrayList<>();;
+        List<TeamMember> projectTeam = new ArrayList<>();
 
         switch (t) {
             case QUALIFICATION:
@@ -25,7 +25,7 @@ public class ProjectTeamCreatorApp {
                 break;
         }
 
-        Map<WorkCategory, List<TeamMember>> workersByCategory = new WorkDistributorApp().groupingWorkersIntoCategories(teamMembers)
+        Map<WorkCategory, List<TeamMember>> workersByCategory = new WorkDistributorApp().groupingWorkersIntoCategories(teamMembers);
 
         for (Map.Entry<WorkCategory, Integer> entry : countPeople.entrySet()) {
             int count = 0;
