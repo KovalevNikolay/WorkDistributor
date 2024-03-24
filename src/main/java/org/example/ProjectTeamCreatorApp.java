@@ -28,9 +28,11 @@ public class ProjectTeamCreatorApp {
 
         for (Map.Entry<WorkCategory, Integer> entry : countPeople.entrySet()) {
             int count = 0;
-            while (count != entry.getValue()) {
-                TeamMember tm = workersByCategory.get(entry.getKey()).get(count);
+            List<TeamMember> list = workersByCategory.get(entry.getKey());
+            while (count != entry.getValue() && count < list.size()) {
+                TeamMember tm = list.get(count);
                 projectTeam.add(tm);
+                count++;
             }
         }
 
