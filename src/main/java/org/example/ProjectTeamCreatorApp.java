@@ -10,8 +10,6 @@ public class ProjectTeamCreatorApp {
         List<TeamMember> projectTeam = new ArrayList<>();
         Map<WorkCategory, List<TeamMember>> workersByCategory = new WorkDistributorApp().groupingWorkersIntoCategories(teamMembers);
 
-
-        //maybe use TeamMember class instead of Worker
         switch (t) {
             case QUALIFICATION:
                 Collections.sort(teamMembers, (t1, t2) -> (int)
